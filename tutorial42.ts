@@ -11,4 +11,13 @@ info = "hello";
 info = true;
 
 //enum for ts
+//assign numeric value 0 1 2, explictly or implicitly
+enum eyeColor{
+  Brown=1,Black=2,Blue=10
+};
+
+var myEyeColor = eyeColor.Brown
+
+console.log(myEyeColor);//print 1 on console
+
 

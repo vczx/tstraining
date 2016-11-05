@@ -48,7 +48,7 @@ let person = {
 };
 
 console.log(Object.getOwnPropertyNames(person));
-console.log(Object.getOwnPropertySymbols(person));
+console.log(Object.getOwnPropertySymbols(person));//??
 
 //use of symbol as properties
 //not getting over-writen?? why??
@@ -60,3 +60,111 @@ let person = {
 };
 
 console.log(person[fname2])
+
+//symbol iterator
+/*
+for..of --> iterator metthod --> symbol.iterator*/
+//having the Symbol.iterator allows the use of for..of loops
+let str = "Hello";
+let arr= [1,2,3];
+let num =5;
+let obj = {name:"Chandler"};
+
+console.log("For string -" + typeof str[Symbol.iterator]);
+console.log("For array -" + typeof arr[Symbol.iterator]);
+console.log("For number -" + typeof num[Symbol.iterator]);//undefined
+console.log("For object -" + typeof obj[Symbol.iterator]);//undefined, need to use iterators 
+
+//Iterables and Iterators
+let iterable = [1,2,3];
+
+function createIterator(array){
+    let count = 0;
+    return{
+        next: function(){
+            return count < array.length? 
+            {value: array[count++], done:false}:
+            {value: undefined, done:true};
+        }
+    }
+}
+
+let myIterator = createIterator(iterable);
+
+console.log(myIterator.next());
+console.log(myIterator.next());
+console.log(myIterator.next());
+console.log(myIterator.next());
+
+
+
+/*Iterable {
+    [symbol.Iterator]() : Iterator
+}
+Iterator{
+    next() : IResultObj
+}
+IResultObj{
+    value: any 
+    done: bool
+}
+*/
+
+//Iterating object properties
+let person = {
+    fname: "Chandler",
+    lname: "Bing"
+};
+
+person[Symbol.iterator] = function(){
+let properties = Object.keys(person);
+let count = 0;
+let isDone = false;
+let next = () => {
+    if(count>=properties.length){
+        isDone = true;
+    }
+    return{done: isDone, value: this[properties[count++]]};
+}
+return {next};
+    
+};
+for (let p of person){
+    console.log(p);
+}
+
+//Generators - pasuing of method execution
+function *createGenerator(){
+  yield 1;//pause at this point
+  console.log("After 1st yield");
+  yield 2;//pause
+}
+
+let myGen = createGenerator();
+
+console.log(myGen.next());//yield 1
+console.log(myGen.next());//yield 2, Object {value: "vincent", done: false}
+console.log(myGen.next()); // Object {value: "vincent", done: false}
+ 
+//Generators version of object iteration
+let person = {
+    fname: "Chandler",
+    lname: "Bing"
+};
+
+person[Symbol.iterator] = function*(){
+let properties = Object.keys(person);
+	for(let t of properties){
+		yield this[t];
+	}
+};
+for (let p of person){
+    console.log(p);
+}
+
+//typescript variable declaration
+//js
+var a = 10;
+var a = 'string'
+//ts
+var a : number = 10;

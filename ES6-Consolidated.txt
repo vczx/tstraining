@@ -1,0 +1,62 @@
+//WeakMaps
+let myMap = new WeakMap();
+let ob1 = {};
+myMap.set(ob1,"Hello World");
+console.log(myMap.get(ob1));
+ob1 = null;
+
+//Symbols
+//new type symbols
+let s = Symbol("First Symbol");
+console.log(typeof s);
+console.log(s.toString());
+
+let s2 = Symbol("Test");
+let s3 = Symbol("Test");
+
+console.log(s2===s3);
+
+let s4 = Symbol.for('RegSymbol');
+let s5 = Symbol.for('RegSymbol');
+
+console.log(s4===s5);
+console.log(Symbol.keyFor(s4));
+
+let fname = Symbol("FirstName");
+let person = {
+    [fname]: "Chandler";
+};
+
+console.log(Object.getOwnPropertyNames(person));
+console.log(Object.getOwnPropertySymbols(person));
+
+let s2 = Symbol("Test");
+let s3 = Symbol("Test");
+
+console.log(s2===s3);//false,symbol always has a unique id
+
+let s4 = Symbol.for('RegSymbol');//look for existing symbol first,if exist return current symbol
+let s5 = Symbol.for('RegSymbol');
+
+console.log(s4===s5);
+console.log(Symbol.keyFor(s4));//return the key of the symbol, get the description
+
+let fname = Symbol("FirstName");
+let person = {
+    [fname]: "Chandler",
+	[fname]: "Bing"
+};
+
+console.log(Object.getOwnPropertyNames(person));
+console.log(Object.getOwnPropertySymbols(person));
+
+//use of symbol as properties
+//not getting over-writen?? why??
+let fname = Symbol("FirstName");
+let fname2 = Symbol("FirstName");
+let person = {
+    [fname]: "Chandler",
+	  [fname2]: "Bing"
+};
+
+console.log(person[fname2])
